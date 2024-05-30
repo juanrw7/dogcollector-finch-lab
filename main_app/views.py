@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Dog
 # Add the following import
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .forms import WalkForm
 
 
 # Create your views here.
@@ -20,7 +21,11 @@ def dog_index(request):
 
 def dog_detail(request, dog_id):
   dog = Dog.objects.get(id=dog_id)
-  return render(request, 'dogs/detail.html', { 'dog': dog })
+  walk_form = WalkForm()
+  return render(request, 'dogs/detail.html', { 
+    'dog': dog, 
+    'walk_form' : walk_form
+    })
 
 class DogCreate(CreateView):
   model = Dog
@@ -34,3 +39,14 @@ class DogUpdate(UpdateView):
 class DogDelete(DeleteView):
   model = Dog
   success_url = '/dogs/'
+
+def add_walk(request, dog_id):
+  form = WalkForm(request.POST)
+  # validate the form
+  if form.is_valid():
+    # don't save the form to the db until it
+    # has the cat_id assigned
+    new_walk = form.save(commit=False)
+    new_walk.dog_id = dog_id
+    new_walk.save()
+  return redirect('dog-detail', dog_id=dog_id)
