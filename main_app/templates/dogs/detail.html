@@ -52,6 +52,11 @@
       action="{% url 'add-walk' dog.id %}"
     >
       {% csrf_token %}
+      {% if dog.walked_today %}
+        <p class="fed">{{dog.name}} has gone on a walk today!</p>
+      {% else %}
+        <p class="unfed">{{dog.name}} might need to go for a walk!</p>
+      {% endif %}
       {{ walk_form.as_p }}
       <button type="submit" class="btn submit">Add Walk</button>
     </form>

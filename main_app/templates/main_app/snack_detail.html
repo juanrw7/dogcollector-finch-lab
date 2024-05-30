@@ -1,0 +1,23 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block head %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/snacks/snack-detail.css' %}"
+/>
+{% endblock %}
+
+{% block content %}
+  
+<div class="card">
+  <div class="card-bg"></div>
+  <div class="card-content">
+    <h2>{{ snack.name }}</h2>
+  </div>
+</div>
+<a href="{% url 'snack-update' snack.id %}" class="btn warn">Edit</a>
+<a href="{% url 'snack-delete' snack.id %}" class="btn danger">Delete</a>
+
+{% endblock %}

@@ -1,6 +1,8 @@
 from django.db import models
 # Import the reverse function
 from django.urls import reverse
+from datetime import date
+
 
 
 TIMES = (
@@ -23,6 +25,9 @@ class Dog(models.Model):
   def get_absolute_url(self):
     return reverse('dog-detail', kwargs={'dog_id': self.id})
   
+  def walked_today(self):
+    return self.walk_set.filter(date=date.today()).count() >= 1
+  
 
 class Walk(models.Model):
   date = models.DateField('Date of the Walk')
@@ -40,3 +45,14 @@ class Walk(models.Model):
   
   class Meta:
     ordering = ['-date']
+
+
+# Add the Toy model
+class Snack(models.Model):
+  name = models.CharField(max_length=50)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('snack-detail', kwargs={'pk': self.id})

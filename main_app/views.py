@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import Dog
+from .models import Dog, Snack
 # Add the following import
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
 from .forms import WalkForm
 
 
@@ -50,3 +51,23 @@ def add_walk(request, dog_id):
     new_walk.dog_id = dog_id
     new_walk.save()
   return redirect('dog-detail', dog_id=dog_id)
+
+class SnackCreate(CreateView):
+  model = Snack
+  fields = '__all__'
+
+
+
+class SnackList(ListView):
+  model = Snack
+
+class SnackDetail(DetailView):
+  model = Snack
+
+class SnackUpdate(UpdateView):
+  model = Snack
+  fields = ['name']
+
+class SnackDelete(DeleteView):
+  model = Snack
+  success_url = '/snacks/'

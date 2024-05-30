@@ -13,4 +13,10 @@ urlpatterns = [
     path('dogs/<int:pk>/delete/', views.DogDelete.as_view(), name='dog-delete'),
 
     path('dogs/<int:dog_id>/add-walk/', views.add_walk, name='add-walk'),
+    path('snacks/create/', views.SnackCreate.as_view(), name='snack-create'),
+
+    path('snacks/<int:pk>/', views.SnackDetail.as_view(), name='snack-detail'),
+    path('snacks/', views.SnackList.as_view(), name='snack-index'),
+    path('snacks/<int:pk>/update/', views.SnackUpdate.as_view(), name='snack-update'),
+    path('snacks/<int:pk>/delete/', views.SnackDelete.as_view(), name='snack-delete'),
 ]
