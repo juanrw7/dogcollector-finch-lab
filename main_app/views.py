@@ -22,15 +22,17 @@ def dog_index(request):
 
 def dog_detail(request, dog_id):
   dog = Dog.objects.get(id=dog_id)
+  snacks_dog_doesnt_have = Snack.objects.exclude(id__in = dog.snacks.all().values_list('id'))
   walk_form = WalkForm()
   return render(request, 'dogs/detail.html', { 
     'dog': dog, 
-    'walk_form' : walk_form
+    'walk_form' : walk_form,
+    'snacks': snacks_dog_doesnt_have,
     })
 
 class DogCreate(CreateView):
   model = Dog
-  fields= '__all__'
+  fields= ['name', 'breed', 'description', 'age']
 
 class DogUpdate(UpdateView):
   model = Dog
@@ -57,7 +59,6 @@ class SnackCreate(CreateView):
   fields = '__all__'
 
 
-
 class SnackList(ListView):
   model = Snack
 
@@ -71,3 +72,8 @@ class SnackUpdate(UpdateView):
 class SnackDelete(DeleteView):
   model = Snack
   success_url = '/snacks/'
+
+def assoc_snack(request, dog_id, snack_id):
+  # Note that you can pass a toy's id instead of the whole object
+  Dog.objects.get(id=dog_id).snacks.add(snack_id)
+  return redirect('dog-detail', dog_id=dog_id)

@@ -4,12 +4,21 @@ from django.urls import reverse
 from datetime import date
 
 
-
 TIMES = (
   ('M', 'Morning'),
   ('A', 'Afternoon'),
   ('N', 'Night')
 )
+
+
+class Snack(models.Model):
+  name = models.CharField(max_length=50)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('snack-detail', kwargs={'pk': self.id})
 
 
 # Create your models here.
@@ -18,6 +27,7 @@ class Dog(models.Model):
   breed = models.CharField(max_length=100)
   description = models.TextField(max_length=250)
   age = models.IntegerField()
+  snacks = models.ManyToManyField(Snack)
 
   def __str__(self):
     return self.name
@@ -45,14 +55,3 @@ class Walk(models.Model):
   
   class Meta:
     ordering = ['-date']
-
-
-# Add the Toy model
-class Snack(models.Model):
-  name = models.CharField(max_length=50)
-
-  def __str__(self):
-    return self.name
-
-  def get_absolute_url(self):
-    return reverse('snack-detail', kwargs={'pk': self.id})

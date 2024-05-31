@@ -81,6 +81,45 @@
       </div>
     {% endif %}
   </section>
+  <section class="toys">
+    <div class="subsection-title">
+      <h2>Snacks</h2>
+    </div>
+    <h3>{{ dog.name }}'s Snacks</h3>
+    <div class="subsection-content">
+      {% if dog.snacks.count %}
+        {% for snack in dog.snacks.all %}
+          <div class="toy-container">
+            <a href="{% url 'snack-detail' snack.id %}">
+              <p>{{ snack.name }}</p>
+            </a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-toys">{{dog.name}} doesn't have any snacks 😞</p>
+      {% endif %}
+    </div>
+    <h3>Available Snacks</h3>
+    <div class="subsection-content">
+      {% if snacks.count %}
+        {% for snack in snacks.all %}
+          <div class="toy-container">
+            <a href="{% url 'snack-detail' snack.id %}">
+              <p>{{ snack.name }}</p>
+            </a>
+            <form action="{% url 'assoc-snack' dog.id snack.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn submit">Give snack</button>
+            </form>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="all-toys">
+          {{dog.name}} already has all the available snacks 🥳
+        </p>
+      {% endif %}
+    </div>
+  </section>
 </div>
 
 {% endblock %}
