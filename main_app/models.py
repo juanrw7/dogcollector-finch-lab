@@ -1,7 +1,7 @@
 from django.db import models
-# Import the reverse function
 from django.urls import reverse
 from datetime import date
+from django.contrib.auth.models import User
 
 
 TIMES = (
@@ -28,6 +28,7 @@ class Dog(models.Model):
   description = models.TextField(max_length=250)
   age = models.IntegerField()
   snacks = models.ManyToManyField(Snack)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   def __str__(self):
     return self.name
